@@ -1,0 +1,11 @@
+# Compiled Java .class files
+/build/
+
+# Eclipse project-specific settings
+.settings/
+
+# Log files
+*.log
+
+# Local server configurations (if it's inside your project)
+/Servers/
