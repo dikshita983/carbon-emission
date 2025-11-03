@@ -7,5 +7,5 @@ public interface UserDao {
     boolean updatePasswordByUsername(String username, String newPassword);
     String getHealthByEmail(String email);
     int getAgeByEmail(String email);
-    //String [] getHealthAndAgeByEmail(String email);
+    
 }

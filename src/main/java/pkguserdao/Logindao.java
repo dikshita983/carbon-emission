@@ -8,18 +8,14 @@ import utils.PasswordUtil;
 public class Logindao {
     public boolean checkUserExists(String email) {
         try {
-            //Class.forName("com.mysql.cj.jdbc.Driver");
-        	
             try (Connection con = DBUtil.getConnection();
-            		//Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectcrud?useSSL=false", "root", "");
                  PreparedStatement ps = con.prepareStatement("select * from registration where email = ?")) {
-                
                 ps.setString(1, email);
                 ResultSet rs = ps.executeQuery();
                 boolean exists = rs.next();
                 
                 if (exists) {
-                    // Get password from registration and save to login table
+                    
                     String password = rs.getString("password");
                     saveToLoginTable(email, password, con);
                 }
@@ -33,14 +29,13 @@ public class Logindao {
 
     private void saveToLoginTable(String email, String hashedPassword, Connection con) {
         try {
-            // First delete any existing entry
+            
             String deleteSql = "DELETE FROM login WHERE email = ?";
             try (PreparedStatement deletePs = con.prepareStatement(deleteSql)) {
                 deletePs.setString(1, email);
                 deletePs.executeUpdate();
             }
 
-            // Then insert new entry - use the already hashed password
             String insertSql = "INSERT INTO login (email, password) VALUES (?, ?)";
             try (PreparedStatement insertPs = con.prepareStatement(insertSql)) {
                 insertPs.setString(1, email);
@@ -56,10 +51,9 @@ public class Logindao {
 
     public boolean validate(String email, String plainPassword) {
         try {
-           // Class.forName("com.mysql.cj.jdbc.Driver");
+           
             try (Connection con = DBUtil.getConnection()){
-            		//Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectcrud?useSSL=false", "root", "")) {
-                // Get the stored hashed password from registration table
+            		
                 PreparedStatement psReg = con.prepareStatement("SELECT password FROM registration WHERE email = ?");
                 psReg.setString(1, email);
                 ResultSet rsReg = psReg.executeQuery();
@@ -92,12 +86,11 @@ public class Logindao {
 
     public String[] getUserDetails(String email) {
         try {
-            //Class.forName("com.mysql.cj.jdbc.Driver");
+            
         	String sql = "SELECT name, age, healthcondition FROM registration WHERE email = ?";
-            try (Connection con = DBUtil.getConnection();
-            		//Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectcrud?useSSL=false", "root", "");
+            try (
+            	 Connection con = DBUtil.getConnection();
                  PreparedStatement ps = con.prepareStatement(sql)) {
-                
                 ps.setString(1, email);
                 ResultSet rs = ps.executeQuery();
                 

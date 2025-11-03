@@ -12,21 +12,16 @@ public class RegionDao {
 
     public boolean save(String region, String purpose, String people, String devices, String vehicle, String traffic, String ventilation) {
         try {
-            // Ensure the MySQL JDBC driver is loaded
-            //Class.forName("com.mysql.cj.jdbc.Driver");
-
             // SQL query to insert data into the region_data table
             String query = "INSERT INTO region_data (region, purpose, people_count, devices, vehicle, traffic_level, ventilation) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-            // Establishing the database connection and using try-with-resources
             try (Connection con = DBUtil.getConnection();
-            		//Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectcrud?useSSL=false", "root", "");
                  PreparedStatement ps = con.prepareStatement(query)) {
 
                 // Null checking and setting values to the query
                 ps.setString(1, (region != null && !region.isEmpty()) ? region.trim() : "Unknown");
                 ps.setString(2, (purpose != null && !purpose.isEmpty()) ? purpose.trim() : "None");
-                ps.setInt(3, (people != null && !people.isEmpty()) ? Integer.parseInt(people.trim()) : 0); // Use Integer.parseInt() for people_count
+                ps.setInt(3, (people != null && !people.isEmpty()) ? Integer.parseInt(people.trim()) : 0); 
                 ps.setString(4, (devices != null && !devices.isEmpty()) ? devices.trim() : "None");
                 ps.setString(5, (vehicle != null && !vehicle.isEmpty()) ? vehicle.trim() : "None");
                 ps.setString(6, (traffic != null && !traffic.isEmpty()) ? traffic.trim() : "Unknown");
@@ -40,7 +35,7 @@ public class RegionDao {
                     System.out.println("Data in region table saved successfully.");
                     return true;
                 } else {
-                    // If no rows were affected
+                    
                     System.out.println("Failed to save data in region table.");
                     return false;
                 }

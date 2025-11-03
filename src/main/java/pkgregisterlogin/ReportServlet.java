@@ -13,9 +13,6 @@ import utils.DBUtil;
 @WebServlet("/ReportServlet")
 public class ReportServlet extends HttpServlet {
 
-//    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/projectcrud?useSSL=false";
-//    private static final String DB_USER = "root";
-//    private static final String DB_PASSWORD = "";
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String reportType = request.getParameter("reportType");
@@ -35,7 +32,7 @@ public class ReportServlet extends HttpServlet {
         }
 
         try (Connection conn = DBUtil.getConnection();
-            //Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD);
+            
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query)
         ) {

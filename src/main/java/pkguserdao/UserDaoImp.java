@@ -11,16 +11,13 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public boolean registerUser(String name, String email, String age, String password,  String healthStatus) throws Exception {
-        //Class.forName("com.mysql.cj.jdbc.Driver");
         
         try(Connection con = DBUtil.getConnection();
-        		//Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectcrud?useSSL=false", "root", "");
             PreparedStatement ps = con.prepareStatement(saveData)) {
             
             ps.setString(1, name.trim());
             ps.setString(2, email.trim());
             ps.setString(3, age != null ? age.trim() : "");
-            //ps.setString(4, password.trim());
             try {
                 String hashedPassword = PasswordUtil.hashPassword(password);
                 System.out.println("Hashed password length: " + hashedPassword.length());
@@ -29,7 +26,6 @@ public class UserDaoImp implements UserDao {
                 System.out.println("Error hashing password: " + e.getMessage());
                 throw e;
             }
-            //ps.setString(5, confirmPassword.trim());
             ps.setString(5, healthStatus != null ? healthStatus.trim() : "");
             
             return ps.executeUpdate() == 1;
@@ -38,10 +34,8 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public boolean checkEmailExists(String email) throws Exception {
-        //Class.forName("com.mysql.cj.jdbc.Driver");
-        
+                
         try(Connection con = DBUtil.getConnection();
-        		//Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectcrud?useSSL=false", "root", "");
             PreparedStatement ps = con.prepareStatement(checkEmail)) {
             
             ps.setString(1, email.trim());
@@ -56,7 +50,6 @@ public class UserDaoImp implements UserDao {
     public boolean verifyUsernameEmail(String username, String email) {
         String sql = "SELECT * FROM  registration WHERE name=? AND email=?";
         try (Connection conn = DBUtil.getConnection();
-        		//Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectcrud?useSSL=false", "root", "");
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
             stmt.setString(2, email);
@@ -71,7 +64,6 @@ public class UserDaoImp implements UserDao {
     public boolean updatePasswordByUsername(String username, String newPassword) {
         String sql = "UPDATE registration SET password=? WHERE name=?";
         try (Connection conn = DBUtil.getConnection();
-        		//Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectcrud?useSSL=false", "root", "");
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             String hashedPassword = PasswordUtil.hashPassword(newPassword);
@@ -108,9 +100,8 @@ public class UserDaoImp implements UserDao {
     public int getAgeByEmail(String email) {
         int age = 0;
         String sql = "SELECT age FROM registration WHERE email = ?";
-        try (Connection conn = DBUtil.getConnection()){
-        		//Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectcrud?useSSL=false", "root", "")){
-            //String sql = "SELECT age FROM registration WHERE email = ?";
+        try (
+        		Connection conn = DBUtil.getConnection()){
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();

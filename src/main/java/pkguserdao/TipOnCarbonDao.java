@@ -13,8 +13,8 @@ public class TipOnCarbonDao {
 
 	    public List<String> fetchTips() {
 	        List<String> tips = new ArrayList<>();
-	        try {Connection conn = DBUtil.getConnection();
-	            //Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectcrud?useSSL=false", "root", "");
+	        try {
+	        	Connection conn = DBUtil.getConnection();
 	            Statement stmt = conn.createStatement();
 	            ResultSet rs = stmt.executeQuery("SELECT tip_text FROM CarbonTips");
 

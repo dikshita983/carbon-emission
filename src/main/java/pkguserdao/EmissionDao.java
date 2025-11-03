@@ -7,18 +7,11 @@ import utils.DBUtil;
 
 public class EmissionDao {
 
-//    private Connection getConnection() throws SQLException {
-//        
-//        String url = "jdbc:mysql://localhost:3306/projectcrud";
-//        String username = "root";
-//        String password = "";
-//        return DriverManager.getConnection(url, username, password);
-//    }
 
     public double getDeviceEmission(String deviceName) {
         double emissionValue = 0.0;
         try (Connection conn = DBUtil.getConnection()){
-        		//Connection conn = getConnection()) {
+        		
             String sql = "SELECT emission_value FROM devices WHERE name = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, deviceName);
@@ -37,7 +30,7 @@ public class EmissionDao {
     public double getVehicleEmission(String vehicleType) {
         double emissionValue = 0.0;
         try (Connection conn = DBUtil.getConnection()){
-        		//Connection conn = getConnection()) {
+        		
             String sql = "SELECT emission_value FROM vehicles WHERE type = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, vehicleType);
@@ -56,7 +49,7 @@ public class EmissionDao {
     public double getTrafficFactor(String trafficLevel) {
         double factor = 0.0;
         try (Connection conn = DBUtil.getConnection()){
-        		//Connection conn = getConnection()) {
+        		
             String sql = "SELECT factor FROM traffic_levels WHERE level = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, trafficLevel);

@@ -24,10 +24,10 @@ public class TipServlet extends HttpServlet {
 		try {
 			TipOnCarbonDao obj = new TipOnCarbonDao();
 
-//			List<String> data = obj.fetchTips();
+
 		    List<String> tips = new ArrayList<>();
 
-	        // 🔧 Simulate DB results (for testing)
+	        //  Simulate DB results (for testing)
 	        tips.add("Take shorter showers.");
 	        tips.add("Unplug electronics when not in use.");
 	        tips.add("Walk or bike for short trips.");
