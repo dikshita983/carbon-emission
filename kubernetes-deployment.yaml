@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carbon-app-deployment
+spec:
+  replicas: 1  # How many copies of your app to run
+  selector:
+    matchLabels:
+      app: carbon-app
+  template:
+    metadata:
+      labels:
+        app: carbon-app
+    spec:
+      containers:
+      - name: carbon-app-container
+        # IMPORTANT: This must match the URL you will push to in Nexus
+        image: nexus.imcc.com:9001/carbon-emission-web-app:latest
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: carbon-app-service
+spec:
+  type: NodePort  # Allows you to access it from outside the cluster
+  selector:
+    app: carbon-app
+  ports:
+    - protocol: TCP
+      port: 80      # The port you want to use in the browser (e.g., http://server/)
+      targetPort: 8080 # The port your Tomcat container is listening on
+      nodePort: 30007  # The specific port on the college server (Change if asked)

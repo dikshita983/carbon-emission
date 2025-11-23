@@ -112,9 +112,10 @@ public class RegisterServlet extends HttpServlet {
                 session.setAttribute("email", email);
                 session.setAttribute("age", age);
                 session.setAttribute("healthstatus", healthstatus);
-              response.sendRedirect("login.jsp");
-                request.setAttribute("success", "You are registered successfully!");
-                request.getRequestDispatcher("register.jsp").forward(request, response);
+                response.sendRedirect("login.jsp"); 
+                return;
+//                request.setAttribute("success", "You are registered successfully!");
+//                request.getRequestDispatcher("register.jsp").forward(request, response);
 
             } else {
                 request.setAttribute("error", "Registration failed! Please try again.");
