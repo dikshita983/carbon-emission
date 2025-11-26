@@ -7,9 +7,9 @@ import java.sql.SQLException;
 public class DBUtil {
 
     
-    private static final String DB_URL = getEnvVar("DB_URL",  "jdbc:mysql://host.docker.internal:3306/projectcrud?useSSL=false");
-    private static final String DB_USER = getEnvVar("DB_USER", "root");
-    private static final String DB_PASSWORD = getEnvVar("DB_PASSWORD", "");
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/projectcrud?useSSL=false&allowPublicKeyRetrieval=true";
+	private static final String DB_USER = "root";
+	private static final String DB_PASSWORD = "root";
 
    
     static {
