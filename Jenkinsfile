@@ -14,7 +14,7 @@ pipeline {
         TAG        = "${env.BUILD_NUMBER}"
         
         // 3. Credentials
-        CRED_ID_SONAR   = 'sonar-cred-142'          
+        CRED_ID_SONAR   = 'sonar-creds-142'          
         CRED_ID_NEXUS   = 'nexus-cred-142'    
             
     }
