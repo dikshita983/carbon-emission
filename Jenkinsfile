@@ -32,7 +32,7 @@ pipeline {
                     // FIX: We ask Jenkins for the tool path here using the specific type found in your error log
                     def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                     
-                    withSonarQubeEnv('SonarQube') { 
+                    withSonarQubeEnv('sonarqube') { 
                         withCredentials([usernamePassword(credentialsId: CRED_ID_SONAR, usernameVariable: 'SONAR_USER', passwordVariable: 'SONAR_PASS')]) {
                             sh """
                             "${scannerHome}/bin/sonar-scanner" \
