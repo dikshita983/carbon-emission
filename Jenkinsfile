@@ -1,11 +1,8 @@
 pipeline {
     agent any
 
-    tools {
-        // FIXED: Changed 'scannerHome' to the correct keyword 'sonarScanner'
-        // Make sure 'sonar-scanner' matches the name in Jenkins -> Tools
-        sonarScanner 'sonar-scanner' 
-    }
+    // REMOVED the 'tools' section here to avoid the "Invalid tool type" error.
+    // We will define the tool inside the stage instead.
 
     environment {
         // 1. Server Configuration
@@ -19,7 +16,7 @@ pipeline {
         // 3. Credentials
         CRED_ID_SONAR   = 'sonar-cred-142'          
         CRED_ID_NEXUS   = 'nexus-cred-142'    
-              
+            
     }
 
     stages {
@@ -32,13 +29,13 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    // We use the tool command to get the path safely
+                    // FIX: We ask Jenkins for the tool path here using the specific type found in your error log
                     def scannerHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                     
                     withSonarQubeEnv('SonarQube') { 
                         withCredentials([usernamePassword(credentialsId: CRED_ID_SONAR, usernameVariable: 'SONAR_USER', passwordVariable: 'SONAR_PASS')]) {
                             sh """
-                            ${scannerHome}/bin/sonar-scanner \
+                            "${scannerHome}/bin/sonar-scanner" \
                             -Dsonar.projectKey=CarbonEmissionWebApp \
                             -Dsonar.projectName="Carbon Emission Web App" \
                             -Dsonar.projectVersion=1.0.${BUILD_NUMBER} \
@@ -57,8 +54,10 @@ pipeline {
         stage('Build & Push to Nexus') {
             steps {
                 script {
+                    // Build
                     sh "docker build -t ${NEXUS_URL}/${IMAGE_NAME}:${TAG} ."
                     
+                    // Login & Push
                     withCredentials([usernamePassword(credentialsId: CRED_ID_NEXUS, usernameVariable: 'N_USER', passwordVariable: 'N_PASS')]) {
                         sh "echo $N_PASS | docker login -u $N_USER --password-stdin http://${NEXUS_URL}"
                         sh "docker push ${NEXUS_URL}/${IMAGE_NAME}:${TAG}"
@@ -72,7 +71,9 @@ pipeline {
                 script {
                     withKubeConfig([credentialsId: CRED_ID_K8S]) {
                         sh "kubectl apply -f kubernetes-deployment.yaml"
+                        // Update image
                         sh "kubectl set image deployment/carbon-app-deployment carbon-app-container=${NEXUS_URL}/${IMAGE_NAME}:${TAG}"
+                        // Restart
                         sh "kubectl rollout restart deployment/carbon-app-deployment"
                     }
                 }
